@@ -10,19 +10,19 @@ weight = lab1_1(:,3:3);
 %Getting list of all age
 age =lab1_1(:,2:2);
 %Plotting the largest correlation coefficeient
-figure("largest correlation coefficeient")
+figure(1)
 scatter(height,weight,'r');
 title('Largest');
 xlabel('feature 1: Height in centimeter');
 ylabel('feature 3: Weight in kilograms');
 %Plotting the second largest correlation coefficeient
-figure("second largest correlation coefficeient")
+figure(2)
 scatter(age,weight,'s','g');
 title('Second Largest');
 xlabel('feature 2: Age in years');
 ylabel('feature 3: Weight in kilograms');
 %%Scatter plot of weight and age after age of 40
-figure("weight and age after age of 40")
+figure(3)
 list1 = lab1_1(8:24,2:2);
 list2 = lab1_1(8:24,3:3);
 scatter(list1,list2);
