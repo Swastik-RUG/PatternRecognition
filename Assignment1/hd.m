@@ -77,14 +77,28 @@ end
     figure(3)
     % This is not correct, we need to generate the normal distribution
     % using the density function. https://public.tableau.com/en-us/s/blog/2013/11/fitting-normal-curve-histogram
-    x = (-5 * std(hd_s):0.01:5 * std(hd_s)) + mean(hd_s);
-    plot(hd_s, normpdf(hd_s, mean(hd_s), std(hd_s)));
-    hold on
-    y = (-5 * std(hd_d):0.01:5 * std(hd_d)) + mean(hd_d);
-    plot(hd_d, normpdf(hd_d,mean(hd_d),std(hd_d)));
-    grid on
+   % plot(hd_s, normpdf(hd_s));
+   % hold on
+   % plot(hd_d, normpdf(hd_d));
+  %  grid on
+    
     
 
+    [hts,ctrs] = hist(hd_s)
+    histogram(hd_s, bins);
+    area = sum(hts) * (ctrs(2)-ctrs(1))
+    xx = linspace(min(hd_s),max(hd_s),bins);
+    hold on; 
+    plot(xx, smooth(area*normpdf(xx, mean(hd_s),std(hd_s))),'r-')
+    hold on;
+    
+    [hts2,ctrs2] = hist(hd_d)
+    histogram(hd_d, bins);
+    area2 = sum(hts2) * (ctrs2(2)-ctrs2(1))
+    xx2 = linspace(min(hd_d),max(hd_d),bins);
+    hold on; 
+    plot(xx2, smooth(area*normpdf(xx2, mean(hd_d),std(hd_d))),'r-')
+    hold off
 
     
     function normalDist = getNormalDist(x, mean, var)
