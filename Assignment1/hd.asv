@@ -73,21 +73,20 @@ end
     histogram(hd_s, bins);
     hold on
     histogram(hd_d, bins);
-    grid on
-    figure(3)
-    % This is not correct, we need to generate the normal distribution
-    % using the density function. https://public.tableau.com/en-us/s/blog/2013/11/fitting-normal-curve-histogram
+    hold on
     x = (-5 * std(hd_s):0.01:5 * std(hd_s)) + mean(hd_s);
-    plot(hd_s, normpdf(hd_s, mean(hd_s), std(hd_s)));
+    plot(x, normpdf(x,mean(hd_s),std(hd_s)));
     hold on
     y = (-5 * std(hd_d):0.01:5 * std(hd_d)) + mean(hd_d);
-    plot(hd_d, normpdf(hd_d,mean(hd_d),std(hd_d)));
+    plot(y, normpdf(y,mean(hd_d),std(hd_d)));
     grid on
     
 
 
     
     function normalDist = getNormalDist(x, mean, var)
+        (1 / (sqrt(var) * SQRT(2*PI()))) * EXP(-((ATTR([Profit Bin]) – [Mean])^2 / (2*[St Dev]^2)))
+
         std = sqrt(var);
         normalDist = [mean-3*std, mean-2*std, mean-std, mean, mean+std, mean+2*std, mean+3*std];
     end
