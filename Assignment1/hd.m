@@ -89,7 +89,7 @@ end
     area = sum(hts) * (ctrs(2)-ctrs(1))
     xx = linspace(min(hd_s),max(hd_s),bins);
     hold on; 
-    plot(xx, smooth(area*normpdf(xx, mean(hd_s),std(hd_s))),'r-')
+    plot(xx, smooth(area*normpdf(xx, mean(hd_s),sqrt(var(hd_s)))),'r-')
     hold on;
     
     [hts2,ctrs2] = hist(hd_d)
@@ -97,7 +97,7 @@ end
     area2 = sum(hts2) * (ctrs2(2)-ctrs2(1))
     xx2 = linspace(min(hd_d),max(hd_d),bins);
     hold on; 
-    plot(xx2, smooth(area*normpdf(xx2, mean(hd_d),std(hd_d))),'r-')
+    plot(xx2, smooth(area*normpdf(xx2, mean(hd_d),sqrt(var(hd_d)))),'r-')
     hold off
 
     
