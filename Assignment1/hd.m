@@ -99,9 +99,78 @@ end
     ylabel("Occurance of HD in the Set")
     hold off
 
-    
-    function normalDist = getNormalDist(x, mean, var)
-        std = sqrt(var);
-        normalDist = [mean-3*std, mean-2*std, mean-std, mean, mean+std, mean+2*std, mean+3*std];
+    normcdf_D = normcdf(hd_d, mean(hd_d), std(hd_d));
+    for i=1:length(hd_d)
+        % Set the acceptance error to 0.0008 as there is consistent result
+        % around the frame 0.0005-0.0008, and the result remains the same
+        % HD threshold = 0.20
+        if normcdf_D(i) <= 0.0008
+            fprintf("CDF= %f for HD = %f\n", normcdf_D(i), hd_d(i))
+        end
     end
+
+    % calculted False regection rate
+norm_s=normcdf(hd_s, mean(hd_s), std(hd_s));
+frr=[];
+count2=0;
+
+if length(hd_s) == length(norm_s)
+    for b=1;length(hd_s)
+        if abs(hd_s(b)-0.2) > 1e4*eps(min(abs(hd_s(b)),abs(0.20)))
+            frr(b-count2)=hd_s(b);
+        elseif abs(hd_s(b)-0.2) <= 1e4*eps(min(abs(hd_s(b)),abs(0.20)))
+            count2=count2+1;
+        end
+     frr  
+    end            
+end
+
+
+testPersonData = load('testperson.mat');
+testPersonData = testPersonData.iriscode;
+res = {};
+z = find(testPersonData == 2);
+c = 1;
+reshapedTestPerson = [];
+for i = 1:length(testPersonData)
+    if ismember(i, z) == 0
+        reshapedTestPerson(c) = testPersonData(i);
+        c = c +1;
+    end
+end
+    rres = {};    
+for k = 1 : length(dinfo)
+    refPerson = cell2mat(seedData(k)).iriscode;
+    %z = k
+    for i = 1:size(refPerson,1)
+        c = 1;
+        data = refPerson(i,:);
+        rdata = [];
+          for q = 1: length(data)
+            if ismember(q, z) == 0
+                rdata(c) = data(q);
+                c = c + 1;
+            end
+          end
+         hd = pdist2(reshapedTestPerson, rdata, 'hamming');
+        if abs(hd-0.20) <= 1e4*eps(min(abs(hd),abs(0.20)))
+            fprintf("Sameperson %d", k)
+        end
+       rres = [rres; fileNames(k), hd];
+
+    end
+end
+res
+
+for k = 1 : length(dinfo)
+    refPerson = cell2mat(seedData(k)).iriscode;
+    %z = k
+    hd = pdist2(testPersonData, refPerson, 'hamming');
+    for j = 1: length(hd)
+        if abs(hd(j)-0.20) <= 1e4*eps(min(abs(hd(j)),abs(0.20)))
+            fprintf("Sameperson %d", k)
+        end
+        res = [res; fileNames(k), hd(j)];
+    end
+end
 end
