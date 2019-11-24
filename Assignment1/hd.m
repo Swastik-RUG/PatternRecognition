@@ -109,7 +109,7 @@ end
         end
     end
 
-    % calculted False regection rate
+% calculted False regection rate
 norm_s=normcdf(hd_s, mean(hd_s), std(hd_s));
 frr=[];
 count2=0;
@@ -128,7 +128,6 @@ end
 
 testPersonData = load('testperson.mat');
 testPersonData = testPersonData.iriscode;
-res = {};
 z = find(testPersonData == 2);
 c = 1;
 reshapedTestPerson = [];
@@ -138,7 +137,29 @@ for i = 1:length(testPersonData)
         c = c +1;
     end
 end
-    rres = {};    
+
+res = {};
+for k = 1 : length(dinfo)
+    refPerson = cell2mat(seedData(k)).iriscode;
+    %z = k
+    hd = pdist2(testPersonData, refPerson, 'hamming');
+    for j = 1: length(hd)
+        if abs(hd(j)-0.20) <= 1e4*eps(min(abs(hd(j)),abs(0.20)))
+            fprintf("Sameperson %d", k)
+        end
+        res = [res; fileNames(k), hd(j)];
+    end
+end
+sorted_res = sortrows(res, 2);
+fileName = string(sorted_res(1,1));
+hammingDist = string(sorted_res(1,2));
+
+fprintf("--------------------------------------------------------------------------------------\n")
+fprintf("TestPerson with bit values 2 retained:\n")
+fprintf("The testperson closely matches with the %s with a Hamming Distance = %s\n", fileName, hammingDist);
+fprintf("--------------------------------------------------------------------------------------\n")
+
+rres = {};
 for k = 1 : length(dinfo)
     refPerson = cell2mat(seedData(k)).iriscode;
     %z = k
@@ -157,20 +178,14 @@ for k = 1 : length(dinfo)
             fprintf("Sameperson %d", k)
         end
        rres = [rres; fileNames(k), hd];
-
     end
 end
-res
+sorted_res = sortrows(rres, 2);
+fileName = string(sorted_res(1,1));
+hammingDist = string(sorted_res(1,2));
+fprintf("\n--------------------------------------------------------------------------------------\n")
+fprintf("TestPerson with bit values 2 Masked:\n")
+fprintf("The testperson closely matches with the %s with a Hamming Distance = %s\n", fileName, hammingDist);
+fprintf("--------------------------------------------------------------------------------------\n")
 
-for k = 1 : length(dinfo)
-    refPerson = cell2mat(seedData(k)).iriscode;
-    %z = k
-    hd = pdist2(testPersonData, refPerson, 'hamming');
-    for j = 1: length(hd)
-        if abs(hd(j)-0.20) <= 1e4*eps(min(abs(hd(j)),abs(0.20)))
-            fprintf("Sameperson %d", k)
-        end
-        res = [res; fileNames(k), hd(j)];
-    end
-end
 end
