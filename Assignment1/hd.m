@@ -15,7 +15,7 @@ end
         randomPersonIndx = randi(length(fileNames));
         personData = cell2mat(seedData(randomPersonIndx)).iriscode;
         data = personData(randperm(length(personData(:,1)),2),:);
-        hd = pdist(data, 'hamming');
+        hd = pdist2(data(1,:), data(2,:), 'hamming');
         numberOfDifferences = size(data, 2)*hd
         fprintf("Computing the Hamming distance for person%02d.mat \n",randomPersonIndx)
         fprintf("Vectors selected \n")
@@ -32,7 +32,7 @@ end
         person_i = cell2mat(seedData(randomPersons(1))).iriscode(randperm(length(personData(:,1)),1),:);
         person_j = cell2mat(seedData(randomPersons(2))).iriscode(randperm(length(personData(:,1)),1),:);
         
-        hd =  pdist([person_i;person_j], 'hamming');
+        hd =  pdist2(person_i,person_j, 'hamming');
         numberOfDiff = size(person_i, 2)*hd
         
         fprintf("Computing the Hamming distance between person%02d.mat and person%02d.mat \n",randomPersons(1), randomPersons(2))
@@ -74,15 +74,7 @@ end
     hold on
     histogram(hd_d, bins);
     grid on
-    figure(3)
-    % This is not correct, we need to generate the normal distribution
-    % using the density function. https://public.tableau.com/en-us/s/blog/2013/11/fitting-normal-curve-histogram
-   % plot(hd_s, normpdf(hd_s));
-   % hold on
-   % plot(hd_d, normpdf(hd_d));
-  %  grid on
-    
-    
+    figure(3)  
 
     [hts,ctrs] = hist(hd_s)
     histogram(hd_s, bins);
