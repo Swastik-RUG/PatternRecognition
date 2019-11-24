@@ -55,41 +55,48 @@ end
     fprintf("The Variance of Set S = %f \n", var(hd_s));
     fprintf("The Mean of Set D = %f \n", mean(hd_d));
     fprintf("The Variance of Set D = %f \n", var(hd_d));
-    figure(1)
-    a = histogram(hd_s, bins);
-    xlabel("Hamming Distance")
-    ylabel("Occurance of HD in the Set")
-    legend(a, {'Set S'});
-    hold on
-    b = histogram(hd_d, bins);
-    legend(b, {'Set D'});
-    grid on
+    %figure(1)
+   % a = histogram(hd_s, bins);
+   % xlabel("Hamming Distance")
+   % ylabel("Occurance of HD in the Set")
+   % legend(a, {'Set S'});
+   % hold on
+   % b = histogram(hd_d, bins);
+   % legend(b, {'Set D'});
+   % grid on
     
    % hd_s_normal_dist = getNormalDist(mean(hd_s), var(hd_s));
    % hd_d_normal_dist = getNormalDist(mean(hd_d), var(hd_d));
    % npd = normpdf(hd_s_normal_dist, mean(hd_s), var(hd_s));
 
-    figure(2)
-    histogram(hd_s, bins);
-    hold on
-    histogram(hd_d, bins);
-    grid on
-    figure(3)  
+    figure(1)
 
-    [hts,ctrs] = hist(hd_s)
-    histogram(hd_s, bins);
-    area = sum(hts) * (ctrs(2)-ctrs(1))
+    a = histogram(hd_s, bins);
+   % legend(a, {'Set S'},'Location', 'northwest')
+    hold on
+    b = histogram(hd_d, bins);
+    legend([a, b], {'Set S', 'Set D'});
+    xlabel("Hamming Distance")
+    ylabel("Occurance of HD in the Set")
+    grid on
+    
+    figure(2)  
+    [hts,ctrs] = hist(hd_s);
+    a = histogram(hd_s, bins);
+    area = sum(hts) * (ctrs(2)-ctrs(1));
     xx = linspace(min(hd_s),max(hd_s),bins);
     hold on; 
     plot(xx, smooth(area*normpdf(xx, mean(hd_s),sqrt(var(hd_s)))),'r-')
     hold on;
-    
-    [hts2,ctrs2] = hist(hd_d)
-    histogram(hd_d, bins);
-    area2 = sum(hts2) * (ctrs2(2)-ctrs2(1))
+    [hts2,ctrs2] = hist(hd_d);
+    b = histogram(hd_d, bins);
+    area2 = sum(hts2) * (ctrs2(2)-ctrs2(1));
     xx2 = linspace(min(hd_d),max(hd_d),bins);
     hold on; 
     plot(xx2, smooth(area*normpdf(xx2, mean(hd_d),sqrt(var(hd_d)))),'r-')
+    legend([a, b], {'Set S', 'Set D'});
+    xlabel("Hamming Distance")
+    ylabel("Occurance of HD in the Set")
     hold off
 
     
