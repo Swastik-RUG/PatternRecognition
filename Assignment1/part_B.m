@@ -1,5 +1,5 @@
 dinfo = dir('person*.mat');
-iterations = 1000;
+iterations = 10000;
 fileNames = {};
 seedData = {};
 for k = 1 : length(dinfo)
@@ -16,10 +16,10 @@ end
         personData = data.iriscode;
         data = personData(randperm(length(personData(:,1)),2),:);
         hd = pdist2(data(1,:), data(2,:), 'hamming');
-        numberOfDifferences = size(data, 2)*hd
+        numberOfDifferences = size(data, 2)*hd;
         fprintf("Computing the Hamming distance for person%02d.mat \n",randomPersonIndx)
         fprintf("Vectors selected \n")
-        data
+        %data
         fprintf("Hammind distance = %f \n", hd);
         fprintf("Number of missmatches in the bit position = %d \n", numberOfDifferences)
         s_set = [s_set; [fileNames(randomPersonIndx), data, hd, numberOfDifferences]];       
@@ -35,7 +35,7 @@ end
         person_j = tmpData_j.iriscode(randperm(length(personData(:,1)),1),:);
         
         hd =  pdist2(person_i,person_j, 'hamming');
-        numberOfDiff = size(person_i, 2)*hd
+        numberOfDiff = size(person_i, 2)*hd;
         
         fprintf("Computing the Hamming distance between person%02d.mat and person%02d.mat \n",randomPersons(1), randomPersons(2))
         fprintf("Vectors selected \n")
@@ -54,7 +54,7 @@ end
     [~, binD] = histcounts(hd_d);
     bins = floor(min(size(binS, 2), size(binD, 2))/2);
     fprintf("\n---------------------------------BINS USED TO PLOT THE HISTOGRAM-----------------------------------\n")
-    fprintf("BINS = %d", bins);
+    fprintf("BINS = %d\n", bins);
     fprintf("---------------------------------------------------------------------------------------------------\n")
 
     
@@ -101,17 +101,9 @@ end
     normcdf_D = normcdf(hd_d, mean(hd_d), std(hd_d));
     far={};
     fprintf("\n--------------------------------------FAR-----------------------------------------------\n")
-    fprintf("At FAR = 0.0005 the HD = 0.20 was consistently obtained\n");
-    fprintf("Due to the randomness of the simulation the values within the range of 0.0005-0.0008 \n can be observed below:\n");
-    fprintf("This range was picked as the HD was at a stable 0.20\n\n");
+    fprintf("Find the Hamming Distance threshold when FAR = 0.0005\n");
     for i=1:length(hd_d)
-        % Set the acceptance error to 0.0008 as there is consistent result
-        % around the frame 0.0005-0.0008, and the result remains the same
-        % HD threshold = 0.20
-        % (rare scenario)
-        % If this printf does not print anything, run the simulation again.
-        % due to randomness sometimes we do not get a value under 0.0008
-        if normcdf_D(i) <= 0.0008 && normcdf_D(i) >= 0.00045
+        if fix(normcdf_D(i)*1e4)/1e4 == fix(0.0005*1e4)/1e4
             far = [far; [normcdf_D(i), hd_d(i)]];
             fprintf(" => False Acceptance Rate = %f for HD = %f\n", normcdf_D(i), hd_d(i))
         end
