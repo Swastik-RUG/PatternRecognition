@@ -13,7 +13,7 @@ end
     for itr = 1:iterations
         randomPersonIndx = randi(length(fileNames));
         data = cell2mat(seedData(randomPersonIndx));
-        personData = d.iriscode;
+        personData = data.iriscode;
         data = personData(randperm(length(personData(:,1)),2),:);
         hd = pdist2(data(1,:), data(2,:), 'hamming');
         numberOfDifferences = size(data, 2)*hd
