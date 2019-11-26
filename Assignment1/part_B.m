@@ -201,7 +201,7 @@ if size(far,1) == 0
     fprintf("This is caused due to the randomness while picking the data")
 end
 
-fprintf("\n--------------------------------STATISTICAL SIGNIFICANCE TEST------------------------\n")
+fprintf("-----------------------------------SIGNIFICANCE LEVEL B/W PERSON-05 and TEST-PERSON-------------------------------------\n")
 
 person05data = load(fileName);
 person05data = person05data.iriscode;
@@ -214,18 +214,13 @@ for i = 1:length(testPersonData)
         maskedTestData(i) = testPersonData(i);
     end
 end
-countOfHigh = [];
-for x = 1: size(maskedData,1)
-    countOfHigh(x) = sum(maskedData(x,:));
-end
-fprintf("\n The code calculates the significance level for all possible rows \n with the maximum number of 1-bits\n");
-loc = find(countOfHigh == max(countOfHigh));
-hdm = pdist2(maskedData(loc,:), maskedTestData, 'hamming');
-fprintf("Hamming distance between person05 and TestPerson with Masked Data = %f \n", unique(hdm));
-for x=1:length(loc)
-[h, p] = ttest2(maskedData(loc(x),:), maskedTestData);
-fprintf("Pos = %d, The Significance level between Person05 and TestPerson = %f \n", loc(x), p);
-end
-fprintf("--------------------------------------------------------------------------------------------\n")
+
+hmd = pdist2(maskedData, maskedTestData, 'hamming');
+fprintf("Max Hamming distance between person05 and TestPerson with Masked Data = %f \n", max(hmd));
+fprintf("Min Hamming distance between person05 and TestPerson with Masked Data = %f \n", min(hmd));
+res = 1-normcdf(max(hmd), mean(hmd)*3/2, std(hmd)*3/2);
+fprintf("The Significance level between Person05 and TestPerson = %f \n", res);
+fprintf("------------------------------------------------------------------------------------------------------------------------\n")
+
 
     
