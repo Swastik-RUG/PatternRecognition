@@ -171,6 +171,7 @@ for k = 1 : length(dinfo)
     for i = 1:size(refPerson,1)
         c = 1;
         data = refPerson(i,:);
+       % odata = {};
         rdata = [];
           for q = 1: length(data)
             if ismember(q, z) == 0
@@ -182,13 +183,15 @@ for k = 1 : length(dinfo)
         if abs(hd-0.20) <= 1e4*eps(min(abs(hd),abs(0.20)))
             fprintf("Sameperson %d", k)
         end
+       % m = rdata;
+       % odata = [odata; m];
        rres = [rres; fileNames(k), hd];
     end
 end
 sorted_res = sortrows(rres, 2);
 fileName = string(sorted_res(1,1));
 hammingDist = string(sorted_res(1,2));
-fprintf("\n-------------------------------TEST PERSON MASKED-------------------------------------------\n")
+fprintf("\n-------------------------------TEST PERSON 2 BIT POSITION EXCLUDED-------------------------------------------\n")
 fprintf("TestPerson with bit values 2 Masked:\n")
 fprintf("The testperson closely matches with the %s with a Hamming Distance = %s\n", fileName, hammingDist);
 fprintf("--------------------------------------------------------------------------------------------\n")
@@ -197,4 +200,32 @@ if size(far,1) == 0
     fprintf("!!!!!!Rare Scenario Encountered on displaying FAR around 0.0005, Restart the Simulation!!!!!!");
     fprintf("This is caused due to the randomness while picking the data")
 end
+
+fprintf("\n--------------------------------STATISTICAL SIGNIFICANCE TEST------------------------\n")
+
+person05data = load(fileName);
+person05data = person05data.iriscode;
+maskedData = and(person05data, testPersonData);
+maskedTestData = [];
+for i = 1:length(testPersonData)
+    if ismember(i, z) == 1
+        maskedTestData(i) = 0;
+    else
+        maskedTestData(i) = testPersonData(i);
+    end
+end
+countOfHigh = [];
+for x = 1: size(maskedData,1)
+    countOfHigh(x) = sum(maskedData(x,:));
+end
+fprintf("\n The code calculates the significance level for all possible rows \n with the maximum number of 1-bits\n");
+loc = find(countOfHigh == max(countOfHigh));
+hdm = pdist2(maskedData(loc,:), maskedTestData, 'hamming');
+fprintf("Hamming distance between person05 and TestPerson with Masked Data = %f \n", unique(hdm));
+for x=1:length(loc)
+[h, p] = ttest2(maskedData(loc(x),:), maskedTestData);
+fprintf("Pos = %d, The Significance level between Person05 and TestPerson = %f \n", loc(x), p);
+end
+fprintf("--------------------------------------------------------------------------------------------\n")
+
     
