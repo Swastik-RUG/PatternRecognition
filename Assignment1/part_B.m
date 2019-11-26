@@ -1,3 +1,6 @@
+% IMPORTANT NOTE!!!: Kindly use the MATLAB 2019b present in the RUG remote
+% desktop for this code execution; we have found that the MATLAB 2019a has
+% some bugs when plotting the Gaussian curve over the Histogram.
 dinfo = dir('person*.mat');
 iterations = 10000;
 fileNames = {};
