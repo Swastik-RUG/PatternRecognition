@@ -16,7 +16,7 @@ for k = 1: people
         end
     end
     res = [res; y];
-    line(x, y, 'color', rand(1,3)); 
+    %line(x, y, 'color', rand(1,3)); 
     scores = [scores; y(end)];
 end
 figure(1)
