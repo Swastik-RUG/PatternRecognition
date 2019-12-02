@@ -3,25 +3,23 @@ n = 100;
 x = 1:1:n;
 res = {};
 scores = {};
-for k = 1: people
+parfor k = 1: people
     y = [];
-    y(1) = 0.0;
-    s = 0;
+    w = randi([0,1],1,n);
     for i =2:n
-        flip = randi(2);
-        if(flip==1)
-           y(i) = y(i-1) + 1.0;
-        else
-            y(i) = y(i-1);
-        end
+        w(i) = w(i) + w(i-1);
     end
-    res = [res; y];
-    %line(x, y, 'color', rand(1,3)); 
-    scores = [scores; y(end)];
+    k
+    res = [res; w];
+    scores = [scores; w(end)];
 end
 figure(1)
-plot(1:1:n, res, 'r');
-fprintf("The mean of Scores = %f", mean(cell2mat(scores)));
-fprintf("The variance of scores = %f", var(cell2mat(scores)));
+toPlot = cell2mat(res);
+plot(1:1:n, toPlot(:,:));
+title("Random walk of 1000000 people for 100 runs")
+ylabel("scores")
+xlabel("runs")
+fprintf("The mean of Scores = %f\n", mean(cell2mat(scores)));
+fprintf("The variance of scores = %f\n", var(cell2mat(scores)));
 
 

@@ -7,7 +7,7 @@ pdf = mvnpdf([x(:) y(:)], meanVec, covariance);
 rpdf = reshape(pdf, length(y), length(x));
 %surf(x,y,rpdf );
 mesh(x, y, rpdf )
-meanPdf = mean(pdf)';
+
 % Calculating Mahalanobis distance
 meanV = [3;4];
 r10_10 = calcMahal(meanV, covariance, [10;10]);
@@ -21,6 +21,6 @@ fprintf("The Mahalnobis distance for point (6,8) is = %f \n", r6_8);
 
 function md = calcMahal(meanVector, covariance, point)
     stdPoint = (point - meanVector);
-    md = stdPoint'*inv(covariance)*stdPoint;
+    md = sqrt(stdPoint'*inv(covariance)*stdPoint);
 end
 

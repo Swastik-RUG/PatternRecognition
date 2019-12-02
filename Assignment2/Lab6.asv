@@ -1,0 +1,36 @@
+terms = {'Anti-aging', 'Customers', 'Fun', 'Groningen', 'Lecture', 'Money', 'Vacation', 'Viagra', 'Watches'};
+spam = {0.00062, 0.005, 0.00015, 0.00001, 0.000015 0.002, 0.00025, 0.001, 0.0003};
+notSpam = {0.000000035, 0.0001, 0.0007, 0.001, 0.0008, 0.0005, 0.00014, 0.0000003, 0.000004};
+spamDict = containers.Map(terms, spam);
+notSpamDict = containers.Map(terms, notSpam);
+
+q1spam = getSpam('Anti-aging') * getSpam('Customers') * getSpam('Fun') * getSpam('Groningen') * getSpam('Lecture') * getSpam('Money') * getSpam('Vacation') * getSpam('Viagra')*spamDict('Watches')
+q1Notspam = getNotSpam('Anti-aging')*getNotSpam('Customers')*getNotSpam('Fun')*getNotSpam('Groningen')*getNotSpam('Lecture')*getNotSpam('Money')*getNotSpam('Vacation')*getNotSpam('Viagra')*notSpamDict('Watches')
+
+probS = 0.9;
+probNs = 0.1;
+
+res = q1Notspam*probNs / ((q1Notspam*probNs)+(q1spam*probS));
+res
+fprintf("%f \n", res);
+
+
+q2spam = getSpam('Anti-aging') * getSpam('Customers') * spamDict('Fun') * getSpam('Groningen') * getSpam('Lecture') * getSpam('Money') * spamDict('Vacation') * getSpam('Viagra')*getSpam('Watches')
+q2Notspam = getNotSpam('Anti-aging')*getNotSpam('Customers')*notSpamDict('Fun')*getNotSpam('Groningen')*getNotSpam('Lecture')*getNotSpam('Money')*notSpamDict('Vacation')*getNotSpam('Viagra')*notSpamDict('Watches')
+res = q1Notspam*probNs / ((q1Notspam*probNs)+(q1spam*probS));
+res
+fprintf("%f \n", res);
+
+function spamP = getSpam(term)
+terms = {'Anti-aging', 'Customers', 'Fun', 'Groningen', 'Lecture', 'Money', 'Vacation', 'Viagra', 'Watches'};
+spam = {0.00062, 0.005, 0.00015, 0.00001, 0.000015 0.002, 0.00025, 0.001, 0.0003};
+spamDict = containers.Map(terms, spam);
+    spamP = 1-spamDict(term);
+end
+
+function notspamP = getNotSpam(term)
+terms = {'Anti-aging', 'Customers', 'Fun', 'Groningen', 'Lecture', 'Money', 'Vacation', 'Viagra', 'Watches'};
+notSpam = {0.000000035, 0.0001, 0.0007, 0.001, 0.0008, 0.0005, 0.00014, 0.0000003, 0.000004};
+notSpamDict = containers.Map(terms, notSpam);
+    notspamP = 1-notSpamDict(term);
+end
