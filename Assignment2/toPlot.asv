@@ -1,0 +1,25 @@
+%fig1 = figure(1)
+x = load('toPlot').toPlot;
+toP = x(1:10000,:);
+
+%a = plot(1:1:100, toP(:,:));
+%%title("Random walk of 1000000 people for 100 runs")
+%ylabel("scores")
+%xlabel("runs")
+%saveas(fig1,'plotsave.png')
+
+% Plot the distribution
+figure(1)
+set(subplot(2,1,1))
+a = plot(1:1:100, toP(:,:));
+title("Random walk of 1000000 people for 100 runs")
+ylabel("scores")
+xlabel("runs")
+sp2 = set(subplot(2,1,2))
+set( get(sp2,'XLabel'), 'String', 'scores" );
+title("Random walk score distribution")
+ylabel("scores occurrence")
+xlabel("scores")
+hist(toP(:,end));
+histfit(toP(:,end));
+grid on;
