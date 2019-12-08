@@ -7,11 +7,6 @@ w = [-1.7, -1.7, -1.7];
 j = 10;
 i = 3;
 h = 1;
-figure(2)
-[f,xi] = ksdensity(w1(:,1));
-plot(xi,f,'LineWidth',2)
-title('Miles per Gallon')
-xlabel('MPG')
 
 figure(1)
 scatter3(w1(:,1), w1(:,2), w1(:,3), 'r', 'filled')
@@ -122,7 +117,7 @@ fprintf("The Vector U belongs to class W%d\n", p_u_res_h2);
 fprintf("The Vector V belongs to class W%d\n", p_v_res_h2);
 fprintf("The Vector W belongs to class W%d\n", p_w_res_h2);
 
-
+exercise3_knn();
 
 function res = computeDensity(u, v, w, X, h)
     tmpRes = 0;
