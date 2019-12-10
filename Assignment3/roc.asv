@@ -10,7 +10,7 @@ for i =0:0.1:10
 end
 hitrates(102)=0;
 falsealarms(102)=0;
-scatter(0.2903, 0.5207)
+scatter(
 plot(falsealarms,hitrates);
 title('ROC');
 ylabel('True Positive rate');

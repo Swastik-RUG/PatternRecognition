@@ -1,3 +1,5 @@
+clear all;
+close all;
 w1 = load('lab3_3_cat1.mat').x_w1;
 w2 = load('lab3_3_cat2.mat').x_w2;
 w3 = load('lab3_3_cat3.mat').x_w3;
@@ -35,17 +37,17 @@ v_w3 = computeDensity2(0.31, 1.51, -0.50, w3, 1);
 w_w3 = computeDensity2(-1.7, -1.7, -1.7, w3, 1);
 
 fprintf("--------------------------CLASS W1-------------------------- \n");
-fprintf("[0.5, 1.0, 0.0] = %f \n", u_w1);
-fprintf("[0.31, 1.51, -0.50] = %f \n", v_w1);
-fprintf("[0.5, 1.0, 0.0] = %f \n", w_w1);
+fprintf("U = [0.5, 1.0, 0.0] = %f \n", u_w1);
+fprintf("V = [0.31, 1.51, -0.50] = %f \n", v_w1);
+fprintf("W = [0.5, 1.0, 0.0] = %f \n", w_w1);
 fprintf("--------------------------CLASS W2-------------------------- \n");
-fprintf("[0.5, 1.0, 0.0] = %f \n", u_w2);
-fprintf("[0.31, 1.51, -0.50] = %f \n", v_w2);
-fprintf("[0.5, 1.0, 0.0] = %f \n", w_w2);
+fprintf("U = [0.5, 1.0, 0.0] = %f \n", u_w2);
+fprintf("V = [0.31, 1.51, -0.50] = %f \n", v_w2);
+fprintf("W = [0.5, 1.0, 0.0] = %f \n", w_w2);
 fprintf("--------------------------CLASS W3-------------------------- \n");
-fprintf("[0.5, 1.0, 0.0] = %f \n", u_w3);
-fprintf("[0.31, 1.51, -0.50] = %f \n", v_w3);
-fprintf("[-1.7, -1.7, -1.7] = %f \n", w_w3);
+fprintf("U = [0.5, 1.0, 0.0] = %f \n", u_w3);
+fprintf("V = [0.31, 1.51, -0.50] = %f \n", v_w3);
+fprintf("W = [-1.7, -1.7, -1.7] = %f \n", w_w3);
 
 w1_count = length(w1);
 w2_count = length(w2);
@@ -135,13 +137,13 @@ end
 function res = computeDensity2(u, v, w, X, h)
     tmpRes = 0;
     normalizationFactor = (h*sqrt(2*pi)).^3;
-    for j = 1:10
+    for j = 1:length(X)
         ux = (u-X(j,1)).^2;
         vx = (v-X(j,2)).^2;
         wx = (w-X(j,3)).^2;
         tmpRes = tmpRes + exp(-1*((ux+vx+wx)/(2*(h.^2))));
     end
     tmpRes = tmpRes/normalizationFactor;
-    res = tmpRes/10;
+    res = tmpRes/length(X);
 end
 
