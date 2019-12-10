@@ -62,8 +62,7 @@ fprintf("Prior Probabiltiy of W2 = %f \n", p_w2);
 fprintf("Prior Probabiltiy of W3 = %f \n", p_w3);
 
 fprintf("--------------------------POSTERIOR PROBABILITIES-------------------------- \n");
-
-[~, p_u_res] = max([p_w1*u_w1, p_w2*u_w2, p_w3*u_w3]);
+[~, p_u_res] = max([u_w1/p_w1, *u_w2, p_w3*u_w3]);
 [~, p_v_res] = max([p_w1*v_w1, p_w2*v_w2, p_w3*v_w3]);
 [~, p_w_res] = max([p_w1*w_w1, p_w2*w_w2, p_w3*w_w3]);
 

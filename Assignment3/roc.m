@@ -1,4 +1,4 @@
-mean1 =5;
+mean1 =2.75;
 sigma =2;
 mean2 =7;
 
@@ -10,7 +10,8 @@ for i =0:0.1:10
 end
 hitrates(102)=0;
 falsealarms(102)=0;
-scatter(0.2903, 0.5207)
+scatter(0.1, 0.8)
+hold on
 plot(falsealarms,hitrates);
 title('ROC');
 ylabel('True Positive rate');
