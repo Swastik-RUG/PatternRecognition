@@ -54,8 +54,8 @@ for i=1:20
 end
 
 figure('NumberTitle', 'off', 'Name', 'LOOCV for K=1-to-20; no of Class=2')
-title("LOOCV Missclassification plot K = 1  to 20");
 plot(1:1:20, crossValdRes, 'b-o');
+title("LOOCV Missclassification plot K = 1-to-20; No-of-classes=2");
 xlabel("Number of Neighbors K");
 ylabel("classification error");
 xticks(1:1:20);
@@ -84,8 +84,8 @@ for i=1:20
     crossValdRes_C4(i) = computeLOOCV(data, i, class_labels_4);
 end
 figure('NumberTitle', 'off', 'Name', 'LOOCV for K=1-to-20; no of Class=4')
-title("LOOCV Missclassification plot K = 1  to 20");
 plot(1:1:20, crossValdRes_C4, 'r-o');
+title("LOOCV Missclassification plot K = 1-to-20; No-of-classes=4");
 xlabel("Number of Neighbors K");
 ylabel("classification error");
 xticks(1:1:20);
