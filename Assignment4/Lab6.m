@@ -1,3 +1,4 @@
+ID = "S4151968"
 % Q1
 I = imread('dogGrayRipples.png');
 I = im2double(I);
@@ -6,12 +7,14 @@ f = log(1+f);
 fs= fftshift(f);
 f = abs(fs);
 imshow(f,[]);
+title(["FOURIER TRANSFORMED ["+ID+"]"])
+
 %Q6
 mask=zeros(size(f));
 [x, y] =find(f==max(f));
-rows = size(f,1)
-cols = size(f,2)
-radius = 1
+rows = size(f,1);
+cols = size(f,2);
+radius = 10;
 center = [x'; y']; 
 [xMat,yMat] = meshgrid(1:cols,1:rows);
 for i =1:size(center,2)   
@@ -20,8 +23,11 @@ for i =1:size(center,2)
 end   
 
 figure, imshow(~mask,[]);title('Mask')
+title(["MASK ["+ID+"]"])
+
 %Q10
 fs=fs.*(~mask);
 f = ifftshift(fs);
 I = real(ifft2(f));
-figure, imshow(I, []), title('Reconstructed');
+figure, imshow(I, []), title(["Reconstructed ["+ID+"]"])
+
