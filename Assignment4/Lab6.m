@@ -3,20 +3,20 @@ ID = "S4151968"
 I = imread('dogGrayRipples.png');
 I = im2double(I);
 f = fft2(I);
-f = log(1+f);
 fs= fftshift(f);
 f = abs(fs);
+f = log(1+f);
 imshow(f,[]);
 title(["FOURIER TRANSFORMED ["+ID+"]"])
 
 %Q6
-mask=zeros(size(f));
 [x, y] =find(f==max(f));
 rows = size(f,1);
 cols = size(f,2);
-radius = 10;
+radius = 13;
 center = [x'; y']; 
 [xMat,yMat] = meshgrid(1:cols,1:rows);
+mask=zeros(size(f));
 for i =1:size(center,2)   
     distFromCenter = sqrt((xMat-center(1,i)).^2 + (yMat-center(2,i)).^2);
     mask(distFromCenter<=radius)=1;
