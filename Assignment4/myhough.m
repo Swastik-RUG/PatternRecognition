@@ -1,33 +1,25 @@
-function [accum, theta, rho] =myhough(E)
-theta = -90:90;
+function [hc, th, rh] =myhough(E)
 [x, y] = size(E);
+distMax = round(sqrt(x^2+y^2));
+theta = -90:1:90;
+rho = -distMax:1:distMax;
 
-%boundary conditions
-pmax =0;
+H = zeros(length(rho),length(theta));
 for i =1:x
     for j=1:y
-        if E(i,j) ==1
-            for t = 1:length(theta)
-                p = floor(i*cos(theta(t)) + j*sin(theta(t)));
-                if abs(p) >pmax
-                    pmax = abs(p);
+        if E(i,j) ~= 0
+            for itheta = 1:length(theta)
+                t = theta(itheta)*pi/180;
+                dist = j*cos(t)+ i*sin(t);
+                [d, irho] = min(abs(rho-dist));
+                if d<=1
+                    H(irho,itheta) = H(irho,itheta)+1;
                 end
             end
         end
     end
 end
-
-accum = zeros(2*pmax,length(theta));
-for i = 1:x
-    for j = 1:y
-        if E(i,j) ==1
-            for t = 1:length(theta)
-                angle = degtorad(theta(t));
-                p = floor(pmax+1 + i*cos(angle) + j*sin(angle));
-                accum(p,t) = accum(p,t) +1;
-            end
-        end
-    end
-end
-rho = -pmax:pmax;
+hc = H;
+th = theta;
+rh = rho;
 end

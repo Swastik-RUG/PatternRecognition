@@ -1,11 +1,10 @@
 clc;
 clear;
-ID = "S4151968";
+ID = "S4035593";
 c = imread('cameraman.tif');
 edges = edge(c, 'canny');
-accum = myhough(edges);
 
-[img,theta,rho] = myhough1(edges);
+[img,theta,rho] = myhough(edges);
 P1  = houghpeaks(img,5);
 figure('NumberTitle', 'off', 'Name', 'Hough transform (myhough function) - ['+ID+']','units','normalized','outerposition',[0 0 1 1]);
 subplot(1,2,1);
@@ -29,7 +28,7 @@ ylabel('\rho (Rho)');
 hold on;
 plot(t(P2(:,2)),r(P2(:,1)),'s','color','yellow');
 
-function [hc, th, rh] =myhough1(E)
+function [hc, th, rh] =myhough(E)
 [x, y] = size(E);
 distMax = round(sqrt(x^2+y^2));
 theta = -90:1:90;
