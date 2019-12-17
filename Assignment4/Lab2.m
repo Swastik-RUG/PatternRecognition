@@ -5,7 +5,7 @@ c = imread('cameraman.tif');
 edges = edge(c, 'canny');
 accum = myhough(edges);
 
-[img,theta,rho] = myhough(edges);
+[img,theta,rho] = myhough1(edges);
 figure('NumberTitle', 'off', 'Name', 'Hough transform (myhough function) - ['+ID+']','units','normalized','outerposition',[0 0 1 1]);
 subplot(1,2,1);
 imshow(img, [], 'xData',theta, 'yData', rho, 'InitialMagnification','fit');
@@ -25,36 +25,25 @@ title('Hough transform (hough function) - ['+ID+']');
 xlabel('\theta (Theta)')
 ylabel('\rho (Rho)');
 
-function [accum, theta, rho] =myhough(E)
-theta = -90:90;
+function [H, theta, rho] =myhough1(E)
 [x, y] = size(E);
+distMax = round(sqrt(x^2+y^2));
+theta = -90:1:89;
+rho = -distMax:1:distMax;
 
-%boundary conditions
-pmax =0;
+H = zeros(length(rho),length(theta));
 for i =1:x
     for j=1:y
-        if E(i,j) ==1
-            for t = 1:length(theta)
-                p = floor(i*cos(theta(t)) + j*sin(theta(t)));
-                if abs(p) >pmax
-                    pmax = abs(p);
+        if E(i,j) ~= 0
+            for itheta = 1:length(theta)
+                t = theta(itheta)*pi/180;
+                dist = x*cos(t)+ y*sin(t);
+                [d, irho] = min(abs(rho-dist));
+                if d<=1
+                    H(irho,itheta) = H(irho,itheta)+1;
                 end
             end
         end
     end
 end
-
-accum = zeros(2*pmax,length(theta));
-for i = 1:x
-    for j = 1:y
-        if E(i,j) ==1
-            for t = 1:length(theta)
-                angle = degtorad(theta(t));
-                p = floor(pmax+1 + i*cos(angle) + j*sin(angle));
-                accum(p,t) = accum(p,t) +1;
-            end
-        end
-    end
-end
-rho = -pmax:pmax;
 end

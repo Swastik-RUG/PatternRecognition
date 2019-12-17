@@ -1,4 +1,4 @@
-ID = "S4151968";
+ID = "S4035593";
 I  = rgb2gray(imread('chess.jpg'));
 BW = edge(I,'Canny');
 [H,T,R] = hough(BW);

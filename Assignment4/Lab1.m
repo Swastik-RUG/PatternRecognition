@@ -5,7 +5,6 @@ c = imread('cameraman.tif');
 %imshow(c);
 edges = edge(c, 'canny');
 hc = hough(edges);
-hcTh = 0.999*hc;
 figure(1)
 imagesc(hc);
 title('Hough transform accumulator done by '+ID);
