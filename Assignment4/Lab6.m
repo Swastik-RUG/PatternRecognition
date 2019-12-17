@@ -11,10 +11,8 @@ title(["FOURIER TRANSFORMED ["+ID+"]"])
 
 %Q6
 [x, y] =find(f==max(f));
-rows = size(f,1);
-cols = size(f,2);
-radius = 13;
-center = [x'; y']; 
+r = 13;
+rows = size(f,1),cols = size(f,2),radius = r,center = [x'; y'];  
 [xMat,yMat] = meshgrid(1:cols,1:rows);
 mask=zeros(size(f));
 for i =1:size(center,2)   
