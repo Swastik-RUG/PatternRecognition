@@ -1,12 +1,12 @@
 clc;
 clear;
-ID = "S4035593";
+ID = "S4151968";
 c = imread('cameraman.tif');
 edges = edge(c, 'canny');
 accum = myhough(edges);
 
 [img,theta,rho] = myhough(edges);
-figure(1);
+figure('NumberTitle', 'off', 'Name', 'Hough transform (myhough function) - ['+ID+']','units','normalized','outerposition',[0 0 1 1]);
 subplot(1,2,1);
 imshow(img, [], 'xData',theta, 'yData', rho, 'InitialMagnification','fit');
 title('Hough transform (myhough function) - ['+ID+']');
@@ -56,5 +56,5 @@ for i = 1:x
         end
     end
 end
-rho = -pmax:pmax
+rho = -pmax:pmax;
 end

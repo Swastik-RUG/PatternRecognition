@@ -1,6 +1,6 @@
 clc;
 clear;
-ID = "S4035593";
+ID = "S4151968";
 c = imread('cameraman.tif');
 %imshow(c);
 edges = edge(c, 'canny');
@@ -19,7 +19,7 @@ figure(3);
 colormap(gray(256));
 P  = houghpeaks(hc,5);
 imshow(H,[],'XData',T,'YData',R,'InitialMagnification','fit');
-title('five strongest local maxima points done by '+ID);
+title('five strongest local maxima points done by ');
 xlabel('\theta'), ylabel('\rho');
 axis on, axis normal, hold on;
 plot(T(P(:,2)),R(P(:,1)),'s','color','yellow');

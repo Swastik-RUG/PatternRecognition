@@ -1,4 +1,4 @@
-ID = "S4151968"
+ID = "S4151968";
 % Q1
 I = imread('dogGrayRipples.png');
 I = im2double(I);
@@ -29,5 +29,6 @@ title(["MASK ["+ID+"]"])
 fs=fs.*(~mask);
 f = ifftshift(fs);
 I = real(ifft2(f));
-figure, imshow(I, []), title(["Reconstructed ["+ID+"]"])
+
+figure, imshow(I, []), title([sprintf("Reconstructed at Radius = %d by [%s]", radius, ID)])
 

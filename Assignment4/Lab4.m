@@ -18,7 +18,7 @@ for i=1:length(sensitivities)
     title(["HEAD TOOL WITH SENSITIVITY ="+sensitivities(i)+ "["+ID+"]"])
 end
 
-figure('NumberTitle', 'off', 'Name', "HEAD TOOL STRONGEST CIRCLE",'units','normalized','outerposition',[0 0 1 1])
+figure('NumberTitle', 'off', 'Name', "HEAD TOOL 2 STRONGEST CIRCLE",'units','normalized','outerposition',[0 0 1 1])
 imshow(I2);
 [c, r] = imfindcircles(I2,[20 40],'Sensitivity',0.9);
 circleRadiiVector = [c r];
@@ -26,5 +26,5 @@ sortedCircles = sortrows(circleRadiiVector, 3, 'desc');
 centersStrong = sortedCircles(1:2,1:2); 
 radiiStrong = sortedCircles(1:2,3);
 viscircles(centersStrong, radiiStrong, 'EdgeColor', 'r')
-title(["HEAD TOOL WITH STRONGEST CIRCLE; SENSITIVITY = 0.9 ["+ID+"]"])
+title(["HEAD TOOL 2 STRONGEST CIRCLE; SENSITIVITY = 0.9 ["+ID+"]"])
 
