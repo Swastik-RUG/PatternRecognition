@@ -1,0 +1,12 @@
+a = load('data_lvq_A(1).mat');
+b = load('data_lvq_B(1).mat');
+matA = a.matA;
+matB = b.matB;
+data = matA+matB;
+figure(1);
+hold on;
+scatter(matA(:,1),matA(:,2),'b');
+scatter(matB(:,1),matB(:,2),'g');
+legend('class A','class B');
+title('Scatter Plot of Data');
+%gscatter(data(:,1),data(:,2),group);
