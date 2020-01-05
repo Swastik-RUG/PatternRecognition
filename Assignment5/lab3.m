@@ -40,16 +40,16 @@ for i=1:10
     testing_class_labels = [zeros(size_testing_a,1); ones(size_testing_b,1)];
     
     % Run the LVQ algorithm to train the model and retrive the new trained prototypes
-    [prototypeList,~] = lvq(train_set,prototypes,training_class_labels,0.01);
-    prototypes = prototypeList;
+    [prototype_list, ~, ~, ~] = relevanceLVQ(train_set,prototypes, training_class_labels, 0.01);
+    prototypes = prototype_list;
     
     % Using the trained prototypes predict the labels for the testing data
-    [~,predictedLabels] = lvq(test_set,prototypes);
+    [~,~,~,predicted_labels] = relevanceLVQ(test_set,prototypes, [], 0.0);
     
     % Check if the predicted labels match with the expected testing labels
     % Determine the classification error based on the missmatches and store
     % the result in classification_error_list.
-    matching_class_labels = find(testing_class_labels == predictedLabels);
+    matching_class_labels = find(testing_class_labels == predicted_labels);
     classification_error = 1-size(matching_class_labels,1)/size(test_set,1);
     classification_error_list = [classification_error_list;classification_error];
 end
