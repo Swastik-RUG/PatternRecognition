@@ -97,9 +97,10 @@ function [prototypeList, error_rate_by_epochs, relevances, prediction_list] = re
             % the previous epoch step, stop the iteration early as further
             % training will not yeild significant gain.
             if abs(previous_epoch_errors/data_size - epoch_errors/data_size) < 0.001
-                printf("Epoch errors reached Saturation....Early Termination");
+                fprintf("Epoch errors reached Saturation....Early Termination\n");
                 break;
             end
+            previous_epoch_errors = epoch_errors;
             % Save the new prototype positions after training
             prototypeList = prototypes;
             % Save the predictions made; not required to return for training

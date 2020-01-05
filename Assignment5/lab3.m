@@ -1,6 +1,7 @@
 clear;
 close all;
 rng(1)
+id = "S4151968";
 % Read the input data as a matrix
 data_a = load('data_lvq_A(1).mat');
 data_b = load('data_lvq_B(1).mat');
@@ -13,14 +14,58 @@ prototype2 = mean(data_a_mat) + randn(size(mean(data_a_mat)));
 prototype3 = mean(data_b_mat) + randn(size(mean(data_b_mat)));
 prototype4 = mean(data_b_mat) + randn(size(mean(data_b_mat)));
 prototypes = [prototype1 0; prototype2 0; prototype3 1];
+%##########################################################################
+% TRAIN AND PLOT
+% * Plot the cluster with prototypes after training
+% * Plot the training error curve
+% * Plot the relevances
+%##########################################################################
+% Combine the Class A and Class B data
+data = [data_a_mat; data_b_mat];
+% Create the class labels for the Class A and Class B data
+class_labels = [zeros(size(data_a_mat,1),1); ones(size(data_b_mat,1),1)];
+% Perform relevance Learning vector quantization on the entire data
+[prototypeList, error_rate_by_epochs, relevances, prediction_list] = relevanceLVQ(data, prototypes, class_labels,0.01);
 
+% Plot the cluster with prototypes after training
+figure 
+scatter(data_a_mat(:,1),data_a_mat(:,2),'b','filled');
+hold on
+scatter(data_b_mat(:,1),data_b_mat(:,2),'g','filled');
+hold on
+for p=1:size(prototypeList,1)
+    plot(prototypeList(p,1), prototypeList(p,2), "*",'MarkerSize',16);
+    hold on
+end
+title(["Scatter plot with prototypes ["+id+"]"])
+hold off
+
+% Plot the Training error curve and Relevances
+figure
+subplot(1,2,1)
+plot(relevances(1,:));
+hold on
+plot(relevances(2,:));
+legend("relevance1", "relevance2")
+title(["Value of relevances ["+id+"]"])
+
+subplot(1,2,2)
+plot(error_rate_by_epochs);
+legend('Error')
+title(["Training error curve ["+id+"]"])
+hold on
+
+%##########################################################################
+% START LOOCV
+%##########################################################################
 % Create samples of training and testing data for LOOCV.
 [training_a, testing_a ]= training_testing_data_split(data_a_mat, 0.9, 10);
 [training_b, testing_b ]= training_testing_data_split(data_b_mat, 0.9, 10);
 
 % List to store the classification errors that occurr during LOOCV
 classification_error_list = [];
-
+error_rates = [];
+relevance_list = [];
 for i=1:10
     % Find the size of the datasets
     size_training_a = size(cell2mat(training_a(i)),1);
@@ -40,7 +85,7 @@ for i=1:10
     testing_class_labels = [zeros(size_testing_a,1); ones(size_testing_b,1)];
     
     % Run the LVQ algorithm to train the model and retrive the new trained prototypes
-    [prototype_list, ~, ~, ~] = relevanceLVQ(train_set,prototypes, training_class_labels, 0.01);
+    [prototype_list, error_rate_by_epochs, relevances, ~] = relevanceLVQ(train_set,prototypes, training_class_labels, 0.01);
     prototypes = prototype_list;
     
     % Using the trained prototypes predict the labels for the testing data
@@ -52,6 +97,8 @@ for i=1:10
     matching_class_labels = find(testing_class_labels == predicted_labels);
     classification_error = 1-size(matching_class_labels,1)/size(test_set,1);
     classification_error_list = [classification_error_list;classification_error];
+    error_rates = error_rate_by_epochs;
+    relevance_list = relevances;
 end
 
 mean_classification_error = mean(classification_error_list);
@@ -63,9 +110,10 @@ text(1,0.5,sprintf('mean classification error value is = %f', mean_classificatio
 hold on
 xlabel("cross-validation fold");
 ylabel("classification error on test sets");
-title("classification error for LOOCV");
+title(["classification error for LOOCV ["+id+"]"]);
 plot(xlim,[mean_classification_error mean_classification_error], 'r')
 ylim([0 1])
+
 
 % Splits the data into n random training and testing data at the ratio p
 function [training, testing] = training_testing_data_split(data, p, n)
