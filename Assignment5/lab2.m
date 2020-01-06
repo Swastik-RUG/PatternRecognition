@@ -1,6 +1,6 @@
 clear;
 close all;
-rng(1)
+rng(22)
 % Read the input data as a matrix
 data_a = load('data_lvq_A(1).mat');
 data_b = load('data_lvq_B(1).mat');
@@ -11,7 +11,6 @@ data_b_mat = cell2mat(struct2cell(data_b));
 prototype1 = mean(data_a_mat) + randn(size(mean(data_a_mat)));
 prototype2 = mean(data_a_mat) + randn(size(mean(data_a_mat)));
 prototype3 = mean(data_b_mat) + randn(size(mean(data_b_mat)));
-prototype4 = mean(data_b_mat) + randn(size(mean(data_b_mat)));
 prototypes = [prototype1 0; prototype2 0; prototype3 1];
 
 % Create samples of training and testing data for LOOCV.
@@ -40,11 +39,11 @@ for i=1:10
     testing_class_labels = [zeros(size_testing_a,1); ones(size_testing_b,1)];
     
     % Run the LVQ algorithm to train the model and retrive the new trained prototypes
-    [prototypeList,~] = lvq(train_set,prototypes,training_class_labels,0.01);
+    [prototypeList,~, ~] = myLVQ1(train_set,prototypes,training_class_labels,0.01);
     prototypes = prototypeList;
     
     % Using the trained prototypes predict the labels for the testing data
-    [~,predictedLabels] = lvq(test_set,prototypes);
+    [~,~,predictedLabels] = myLVQ1(test_set,prototypes, [], 0);
     
     % Check if the predicted labels match with the expected testing labels
     % Determine the classification error based on the missmatches and store

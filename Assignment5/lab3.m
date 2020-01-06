@@ -1,6 +1,6 @@
 clear;
 close all;
-rng(1)
+rng(22)
 id = "S4151968";
 % Read the input data as a matrix
 data_a = load('data_lvq_A(1).mat');
@@ -12,7 +12,6 @@ data_b_mat = cell2mat(struct2cell(data_b));
 prototype1 = mean(data_a_mat) + randn(size(mean(data_a_mat)));
 prototype2 = mean(data_a_mat) + randn(size(mean(data_a_mat)));
 prototype3 = mean(data_b_mat) + randn(size(mean(data_b_mat)));
-prototype4 = mean(data_b_mat) + randn(size(mean(data_b_mat)));
 prototypes = [prototype1 0; prototype2 0; prototype3 1];
 %##########################################################################
 % TRAIN AND PLOT
