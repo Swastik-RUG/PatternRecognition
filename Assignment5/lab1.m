@@ -1,14 +1,14 @@
 %loading the data
 a = load('data_lvq_A(1).mat');
 b = load('data_lvq_B(1).mat');
-id = "S4035593";
+id = "S4151968";
 matA = a.matA;
 matB = b.matB;
 data = matA+matB;
 figure(1);
 hold on;
-scatter(matA(:,1),matA(:,2),'b');
-scatter(matB(:,1),matB(:,2),'g');
+scatter(matA(:,1),matA(:,2),'b', 'filled');
+scatter(matB(:,1),matB(:,2),'g', 'filled');
 legend('class A','class B');
 title('Scatter Plot of Data ['+id+']');
 % -------------------------------
@@ -72,20 +72,18 @@ title(strcat('Error curve '+"["+id+"]"',plot_name));
 xlabel('Epochs');
 ylabel('Error');
 
- for j = 1:length(training_data)
-     distances =[];
-     x = training_data(j,1:2);
-     y = training_data(j,3);
-     for k = 1:length(wstar_arr)
-         distances = [distances ; pdist2(x,wstar_arr(k,:), 'squaredeuclidean')];
-     end
-      [m index] = min(distances);
-      if(wstar_labels(index)==0)
-          col = [col; [0,1,0]];
-      else
-          col = [col;[0,0,1]];
-      end
- end
+for j = 1:length(training_data)
+    distances =[];
+    x = training_data(j,1:2);
+    y = training_data(j,3);
+    distances = pdist2(x,wstar_arr(:,1:2), 'squaredeuclidean');
+    [m index] = min(distances);
+    if(wstar_labels(index)==0)
+        col = [col; [0,1,0]];
+    else
+        col = [col;[0,0,1]];
+    end
+end
 %Scatter curve for each prototypes
  figure(3)
  subplot(2,2,plot_no);
