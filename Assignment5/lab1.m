@@ -53,9 +53,7 @@ for i=1:epochs
         distance =[];
         x = training_data(j,1:2);
         y = training_data(j,3);
-        for k = 1:length(wstar_arr)
-            distance = [distance ; pdist2(x,wstar_arr(k,:), 'squaredeuclidean')];
-        end
+        distance = pdist2(x,wstar_arr(:,1:2), 'squaredeuclidean');
         [m,index] = min(distance);
         wstar =wstar_arr(index,:);
         wstar_label = wstar_labels(index);
