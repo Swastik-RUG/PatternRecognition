@@ -1,7 +1,7 @@
 clear;
 close all;
 rng(100)
-id = "S4151968";
+id = "S4035593";
 % Read the input data as a matrix
 data_a = load('data_lvq_A(1).mat');
 data_b = load('data_lvq_B(1).mat');
