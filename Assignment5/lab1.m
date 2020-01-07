@@ -1,14 +1,14 @@
 %loading the data
 a = load('data_lvq_A(1).mat');
 b = load('data_lvq_B(1).mat');
-id = "S4035593";
+id = "S4151968";
 matA = a.matA;
 matB = b.matB;
 data = matA+matB;
 figure(1);
 hold on;
-scatter(matA(:,1),matA(:,2),'b');
-scatter(matB(:,1),matB(:,2),'g');
+scatter(matA(:,1),matA(:,2),'b', 'filled');
+scatter(matB(:,1),matB(:,2),'g', 'filled');
 legend('class A','class B');
 title('Scatter Plot of Data ['+id+']');
 % -------------------------------
@@ -33,68 +33,15 @@ prototypes_arr4 = [A(randi(length(A)), :); A(randi(length(A)),:)];
 prototypes_arr4 = [prototypes_arr4 ; B(randi(length(B)), :); B(randi(length(B)), :)];
 
 
-dispgraph(prototypes_arr1,'1-1',training_data,1);
-dispgraph(prototypes_arr2,'1-2',training_data,2);
-dispgraph(prototypes_arr3,'2-1',training_data,3);
-dispgraph(prototypes_arr4,'2-2',training_data,4);
+dispgraph(prototypes_arr1,'1-1',training_data,1,0);
+dispgraph(prototypes_arr2,'1-2',training_data,2,0);
+dispgraph(prototypes_arr3,'2-1',training_data,3,1);
+dispgraph(prototypes_arr4,'2-2',training_data,4,0);
 
-mylvq(matA,matB,25,0.01);
-
-function res = mylvq(data1,data2,epochs,learning_rate)
-array1 = zeros(length(data1));
-array2 = ones(length(data2));
-A = [data1 array1];
-B = [data2 array2];
-training_data = [A;B];
-
-rng(1);
-training_data = training_data(randperm(length(training_data)),:);
-
-%setting the epochs and learning rate
-epochs =epochs;
-learning_rate = learning_rate;
-
-%creating prototypes
-prototypes_arr = [A(randi(length(A)), :); A(randi(length(A)),:)];
-prototypes_arr = [prototypes_arr ; B(randi(length(B)), :)];
-%wstar is initialized from the data
-wstar_arr = prototypes_arr(:,1:2);
-wstar_labels = prototypes_arr(:,3);
-error =[];
-
-for i=1:epochs
-    misclassified = 0;
-    for j=1:length(training_data)
-        distance =[];
-        x = training_data(j,1:2);
-        y = training_data(j,3);
-        for k = 1:length(wstar_arr)
-            distance = [distance ; pdist2(x,wstar_arr(k,:), 'squaredeuclidean')];
-        end
-        [m,index] = min(distance);
-        wstar =wstar_arr(index,:);
-        wstar_label = wstar_labels(index);
-        wstar_arr(index,:)=wstar + learning_rate *Psi_function(wstar_label,y) *(x-wstar);
-        if(Psi_function(wstar_label,y) == -1)
-            misclassified = misclassified + 1;
-        end
-    end
-    error = [error; misclassified/length(training_data)];
-end
-%displaying the plot
-figure(4);
-plot(1:epochs,error);
-title('Error Curve');
-xlabel('Epochs');
-ylabel('Error');
-
-end
-
-
-function dispgraph(prototypes_arr, plot_name, training_data, plot_no)
+function dispgraph(prototypes_arr, plot_name, training_data, plot_no, plot_standalone)
 epochs =25;
 learning_rate = 0.01;
-id = "S4035593";
+id = "S4151968";
 wstar_arr = prototypes_arr(:,1:2);
 wstar_labels = prototypes_arr(:,3);
 error =[];
@@ -118,6 +65,14 @@ for i=1:epochs
     error = [error; misclassified/length(training_data)];
 end
 %Displaying the error curve for each prototypes
+if plot_standalone == 1
+    figure;
+    plot(1:epochs,error);
+    title(strcat('Error curve '+"["+id+"]"',plot_name));
+    xlabel('Epochs');
+    ylabel('Error');
+end
+
 figure(2);
 subplot(2,2,plot_no);
 plot(1:epochs,error);
@@ -125,20 +80,18 @@ title(strcat('Error curve '+"["+id+"]"',plot_name));
 xlabel('Epochs');
 ylabel('Error');
 
- for j = 1:length(training_data)
-     distances =[];
-     x = training_data(j,1:2);
-     y = training_data(j,3);
-     for k = 1:length(wstar_arr)
-         distances = [distances ; pdist2(x,wstar_arr(k,:), 'squaredeuclidean')];
-     end
-      [m index] = min(distances);
-      if(wstar_labels(index)==0)
-          col = [col; [0,1,0]];
-      else
-          col = [col;[0,0,1]];
-      end
- end
+for j = 1:length(training_data)
+    distances =[];
+    x = training_data(j,1:2);
+    y = training_data(j,3);
+    distances = pdist2(x,wstar_arr(:,1:2), 'squaredeuclidean');
+    [m index] = min(distances);
+    if(wstar_labels(index)==0)
+        col = [col; [0,1,0]];
+    else
+        col = [col;[0,0,1]];
+    end
+end
 %Scatter curve for each prototypes
  figure(3)
  subplot(2,2,plot_no);

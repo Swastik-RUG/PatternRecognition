@@ -62,7 +62,7 @@ text(1,0.5,sprintf('mean classification error value is = %f', mean_classificatio
 hold on
 xlabel("cross-validation fold");
 ylabel("classification error on test sets");
-title("LVQ classification error for LOOCV");
+title("classification error for LOOCV");
 plot(xlim,[mean_classification_error mean_classification_error], 'r')
 ylim([0 1])
 
