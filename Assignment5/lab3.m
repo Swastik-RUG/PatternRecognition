@@ -37,6 +37,7 @@ for p=1:size(prototypeList,1)
     hold on
 end
 title(["Scatter plot with prototypes ["+id+"]"])
+legend("Dataset B","Dataset A","Prototype-C1-A", "Prototype-C1-B", "Prototype-C2-A", "Prototype-C2-B");
 hold off
 
 % Plot the Training error curve and Relevances
@@ -47,11 +48,15 @@ hold on
 plot(relevances(2,:));
 legend("relevance1", "relevance2")
 title(["Value of relevances ["+id+"]"])
+xlabel('Epochs');
+ylabel('Relevance');
 
 subplot(1,2,2)
 plot(error_rate_by_epochs);
 legend('Error')
 title(["Training error curve ["+id+"]"])
+xlabel('Epochs');
+ylabel('Misclassification');
 hold on
 
 %##########################################################################
