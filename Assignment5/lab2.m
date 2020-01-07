@@ -1,6 +1,6 @@
 clear;
 close all;
-rng(22)
+rng(100)
 % Read the input data as a matrix
 data_a = load('data_lvq_A(1).mat');
 data_b = load('data_lvq_B(1).mat');

@@ -1,6 +1,6 @@
 clear;
 close all;
-rng(22)
+rng(100)
 id = "S4151968";
 % Read the input data as a matrix
 data_a = load('data_lvq_A(1).mat');

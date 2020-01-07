@@ -1,6 +1,7 @@
 %loading the data
 a = load('data_lvq_A(1).mat');
 b = load('data_lvq_B(1).mat');
+id = "S4035593";
 matA = a.matA;
 matB = b.matB;
 data = matA+matB;
@@ -9,7 +10,7 @@ hold on;
 scatter(matA(:,1),matA(:,2),'b');
 scatter(matB(:,1),matB(:,2),'g');
 legend('class A','class B');
-title('Scatter Plot of Data');
+title('Scatter Plot of Data ['+id+']');
 % -------------------------------
 
 array1 = zeros(length(matA));
@@ -40,7 +41,7 @@ dispgraph(prototypes_arr4,'2-2',training_data,4);
 function dispgraph(prototypes_arr, plot_name, training_data, plot_no)
 epochs =25;
 learning_rate = 0.01;
-
+id = "S4035593";
 wstar_arr = prototypes_arr(:,1:2);
 wstar_labels = prototypes_arr(:,3);
 error =[];
@@ -69,7 +70,7 @@ end
 figure(2);
 subplot(2,2,plot_no);
 plot(1:epochs,error);
-title(strcat('Error curve ',plot_name));
+title(strcat('Error curve '+"["+id+"]"',plot_name));
 xlabel('Epochs');
 ylabel('Error');
 
@@ -77,7 +78,7 @@ ylabel('Error');
      distances =[];
      x = training_data(j,1:2);
      y = training_data(j,3);
-     for k = 1:length(wstar)
+     for k = 1:length(wstar_arr)
          distances = [distances ; pdist2(x,wstar_arr(k,:), 'squaredeuclidean')];
      end
       [m index] = min(distances);
@@ -91,7 +92,7 @@ ylabel('Error');
  figure(3)
  subplot(2,2,plot_no);
  gscatter(training_data(:,1), training_data(:,2),col);
- title(strcat('Scatter Curve ', plot_name));
+ title(strcat('Scatter Curve '+"["+id+"]"', plot_name));
  legend("Dataset B","Dataset A");
 end
 
