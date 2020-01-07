@@ -33,15 +33,15 @@ prototypes_arr4 = [A(randi(length(A)), :); A(randi(length(A)),:)];
 prototypes_arr4 = [prototypes_arr4 ; B(randi(length(B)), :); B(randi(length(B)), :)];
 
 
-dispgraph(prototypes_arr1,'1-1',training_data,1);
-dispgraph(prototypes_arr2,'1-2',training_data,2);
-dispgraph(prototypes_arr3,'2-1',training_data,3);
-dispgraph(prototypes_arr4,'2-2',training_data,4);
+dispgraph(prototypes_arr1,'1-1',training_data,1,0);
+dispgraph(prototypes_arr2,'1-2',training_data,2,0);
+dispgraph(prototypes_arr3,'2-1',training_data,3,1);
+dispgraph(prototypes_arr4,'2-2',training_data,4,0);
 
-function dispgraph(prototypes_arr, plot_name, training_data, plot_no)
+function dispgraph(prototypes_arr, plot_name, training_data, plot_no, plot_standalone)
 epochs =25;
 learning_rate = 0.01;
-id = "S4035593";
+id = "S4151968";
 wstar_arr = prototypes_arr(:,1:2);
 wstar_labels = prototypes_arr(:,3);
 error =[];
@@ -65,6 +65,14 @@ for i=1:epochs
     error = [error; misclassified/length(training_data)];
 end
 %Displaying the error curve for each prototypes
+if plot_standalone == 1
+    figure;
+    plot(1:epochs,error);
+    title(strcat('Error curve '+"["+id+"]"',plot_name));
+    xlabel('Epochs');
+    ylabel('Error');
+end
+
 figure(2);
 subplot(2,2,plot_no);
 plot(1:epochs,error);

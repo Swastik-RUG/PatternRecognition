@@ -51,7 +51,7 @@ end
 %displaying the plot
 figure(1);
 plot(1:epochs,error);
-title('Error Curve');
+title('Error Curve S4151968');
 xlabel('Epochs');
 ylabel('Error');
 
