@@ -19,7 +19,7 @@ A = [matA array1];
 B = [matB array2];
 training_data = [A;B];
 
-rng(1);
+rng(100);
 training_data = training_data(randperm(length(training_data)),:);
 
 %prototypes for 1-1,1-2,2-1,2-2
@@ -92,8 +92,13 @@ ylabel('Error');
  figure(3)
  subplot(2,2,plot_no);
  gscatter(training_data(:,1), training_data(:,2),col);
+ hold on;
+ for p=1:size(wstar_arr,1)
+    plot(wstar_arr(p,1), wstar_arr(p,2), "*",'MarkerSize',16);
+    hold on
+end
  title(strcat('Scatter Curve '+"["+id+"]"', plot_name));
- legend("Dataset B","Dataset A");
+ legend("Dataset B","Dataset A","Prototype-C1-A", "Prototype-C1-B", "Prototype-C2-A", "Prototype-C2-B");
 end
 
 

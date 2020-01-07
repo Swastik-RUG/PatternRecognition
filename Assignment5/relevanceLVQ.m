@@ -38,37 +38,27 @@ function [prototypeList, error_rate_by_epochs, relevances, prediction_list] = re
                 expected_label = class_labels(i);
                 % If the prediction is correct increase or strengthen the
                 % bias of the prototype towards the sample point.
-                if(prediction == expected_label)
-                    % Move the prototype closer to the sample point
-                    prototypes(min_indx, 1:2) = prototypes(min_indx,1:2) + learning_rate * (cur_sample_row - prototypes(min_indx,1:2));
-                    % Compute the new relevances
-                    relevance1 = relevance1 - relevance_learning_rate * abs(cur_sample_row(1)-prototypes(min_indx));
-                    relevance2 = relevance2 - relevance_learning_rate * abs(cur_sample_row(1)-prototypes(min_indx));
-                    % A restriction to not allow relevance 1 from dropping
-                    % below 0
-                    if relevance1 < 0
-                        relevance1 = 0;
-                    end
-                    % Normalize the releavances to be between 0 - 1
-                    relevance1 = relevance1/(relevance1+relevance2);
-                    relevance2 = relevance2/(relevance1+relevance2);
-                else
-                    % Move the prototype away from the sample point as the
-                    % prediction was wrong in this scenario
-                    prototypes(min_indx, 1:2) = prototypes(min_indx,1:2) - learning_rate * (cur_sample_row - prototypes(min_indx,1:2));
-                    % Compute the new relevances
-                    relevance1 = relevance1 + relevance_learning_rate * abs(cur_sample_row(1)-prototypes(min_indx));
-                    relevance2 = relevance2 + relevance_learning_rate * abs(cur_sample_row(1)-prototypes(min_indx));
-                    % A restriction to not allow relevance 1 from dropping
-                    % below 0
-                    if relevance1 < 0
-                        relevance1 = 0;
-                    end
-                    % Normalize the releavances to be between 0 - 1
-                    relevance1 = relevance1/(relevance1+relevance2);
-                    relevance2 = relevance2/(relevance1+relevance2);
+                % Psi is a function that will return +1 if the prediction
+                % is correct and -1 otherwise
+                prototypes(min_indx, 1:2) = prototypes(min_indx,1:2) + Psi(prediction, expected_label) * learning_rate * (cur_sample_row - prototypes(min_indx,1:2));
+                % Decrease or increase the influence of relevance based on
+                % the prediction.
+                % if the prediction is correct relevance value is decreased
+                % if the prediction is inccorect the value is increased.
+                relevance1 = relevance1 + Psi(prediction, expected_label) * -1 * relevance_learning_rate * abs(cur_sample_row(1)-prototypes(min_indx));
+                relevance2 = relevance2 + Psi(prediction, expected_label) * -1 * relevance_learning_rate * abs(cur_sample_row(1)-prototypes(min_indx));
+                % restrict the relevance to a lower limit of 0
+                if relevance1 < 0
+                    relevance1 = 0;
+                end
+                % Normalize the relevance values computed
+                relevance1 = relevance1/(relevance1+relevance2);
+                relevance2 = relevance2/(relevance1+relevance2);
+                % Increment the epoch errors or misclassification if the
+                % prediction was wrong
+                if Psi(prediction, expected_label) == -1
                     epoch_errors = epoch_errors + 1;
-                end            
+                end                     
             end
             % Store the relevance values that were obatined in each epoch
             % step.
@@ -120,7 +110,7 @@ function [prototypeList, error_rate_by_epochs, relevances, prediction_list] = re
             cur_sample_dist = find_euclidian_dist(cur_sample_row, prototypes(:,1:2), relevance1, relevance2);
             % Find the prototype which has the least distance from the
             % sample point
-            [min_dist_to_prototype, min_indx] = min(cur_sample_dist);
+            [~, min_indx] = min(cur_sample_dist);
             % Predict the class label of the sample point using the
             % prototype determined in the previous step
             predictions(j,1) = prototypes(min_indx, 3);
@@ -135,5 +125,13 @@ function [prototypeList, error_rate_by_epochs, relevances, prediction_list] = re
     function dist = find_euclidian_dist(sample_point, prototypes, relevance1, relevance2)
         dist = ((relevance1 * (sample_point(1) - prototypes(:,1)).^2) + (relevance2 * (sample_point(2) - prototypes(:,2)).^2))';
     end
-    
+   
+    function sign = Psi(y_pred, y_true)
+        if y_pred == y_true
+            sign = 1;
+        else
+            sign = -1;
+        end
+    end
+
 end
