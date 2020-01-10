@@ -1,5 +1,5 @@
 % Reference steps: https://www.geeksforgeeks.org/ml-k-means-algorithm/
-
+% Merged with Kmeans 0 - Kmeans  1 - Kmeans Plus plus
 function [init_centroid, centroid, cluster_labels] = kmeansPlusPlus(data, k, max_epochs)
     data_size = size(data,1);
     cluster_labels = zeros(data_size,1)-1;
