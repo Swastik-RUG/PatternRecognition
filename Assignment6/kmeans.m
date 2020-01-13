@@ -1,23 +1,27 @@
-function [centroid, cluster_labels, init_centroid] = kmeans(data, k, max_epochs, kmeans_pp)
+function [centroid, cluster_labels, init_centroid] = kmeans(data, k, max_epochs, kmeans_pp, centroid_data)
     data_size = size(data,1);
     cluster_labels = zeros(data_size,1)-1;
     
     init_centroid = [];
-    if kmeans_pp ~= 0
-        init_centroid = data(randperm(data_size,k),:);
-    else
-        init_centroid = [data(randperm(data_size,1),:)];
-        for c=1:k-1
-        distances = [];
-            parfor indx=1:data_size
-                cur_data_point = data(indx,:);
-                dist = pdist2(cur_data_point, init_centroid, 'squaredeuclidean');
-                [min_dist, ~] = min(dist);
-                distances = [distances;min_dist];
+    if ~exist('centroid_data','var')
+        if kmeans_pp ~= 0
+            init_centroid = data(randperm(data_size,k),:);
+        else
+            init_centroid = [data(randperm(data_size,1),:)];
+            for c=1:k-1
+            distances = [];
+                parfor indx=1:data_size
+                    cur_data_point = data(indx,:);
+                    dist = pdist2(cur_data_point, init_centroid, 'squaredeuclidean');
+                    [min_dist, ~] = min(dist);
+                    distances = [distances;min_dist];
+                end
+                new_centroid_indx = randsample(data_size,1, true, distances);
+                init_centroid = [init_centroid; data(new_centroid_indx,:)];
             end
-            new_centroid_indx = randsample(data_size,1, true, distances);
-            init_centroid = [init_centroid; data(new_centroid_indx,:)];
         end
+    else
+        init_centroid = centroid_data;
     end
         
     centroid = init_centroid;

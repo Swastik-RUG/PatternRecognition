@@ -12,7 +12,7 @@ figure
 for i=1:length(K)
     k = K(i);
     subplot(2,2,i);
-    [centroid, cluster_labels] = kmeans(data,k,max_epochs);
+    [centroid, cluster_labels] = kmeans(data,k,max_epochs,0);
     for j=1:size(centroid,1)
         p = plot(centroid(j,1), centroid(j,2), '^','MarkerSize',12, 'MarkerFaceColor', rand(1,3));
         %p.MarkerFaceColor = p.Color;
@@ -29,7 +29,7 @@ figure
 for i=1:length(K)
     k = K(i);
     subplot(2,2,i);
-    [centroid, cluster_labels, init_centroid] = kmeans(data,k,max_epochs);
+    [centroid, cluster_labels, init_centroid] = kmeans(data,k,max_epochs,0);
     for j=1:size(centroid,1)
         p = plot(centroid(j,1), centroid(j,2), '^','MarkerSize',12, 'MarkerFaceColor', rand(1,3));
         %p.MarkerFaceColor = p.Color;

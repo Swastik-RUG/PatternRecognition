@@ -3,7 +3,8 @@ function quantization_error = calc_quantization_error(data, centroids, labels)
     for i=1:size(centroids,1)
         centroid_related_data_points = data(find(labels == i),:);
         for j=1:size(centroid_related_data_points,1)
-            inner_sigma = pow2(norm(centroids(i,:)-centroid_related_data_points(j,:)));
+            inner_sigma = norm(centroids(i,:)-centroid_related_data_points(j,:)).^2;
+            %inner_sigma = pow2(norm(centroids(i,:)-centroid_related_data_points(j,:)));
             outer_sigma = outer_sigma + inner_sigma;
         end
     end
