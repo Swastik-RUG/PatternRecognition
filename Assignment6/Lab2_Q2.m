@@ -1,5 +1,6 @@
 clc;
 clear;
+id = "S4151968";
 rng(100);
 centroid_data = load('data/clusterCentroids.mat');
 centroid_data = cell2mat(struct2cell(centroid_data));
@@ -18,6 +19,6 @@ for i=1:length(epochs)
     hold on;
     plot(prototypes(:,1), prototypes(:,2),'r+', 'markersize',8, 'linewidth',2);
     voronoi(prototypes(:,1), prototypes(:,2));
-    title("Epoch = "+ epoch)
+    title("Epoch = "+ epoch + " ["+id+"]")
 end
 

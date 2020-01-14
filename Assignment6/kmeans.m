@@ -4,7 +4,7 @@ function [centroid, cluster_labels, init_centroid] = kmeans(data, k, max_epochs,
     
     init_centroid = [];
     if ~exist('centroid_data','var')
-        if kmeans_pp ~= 0
+        if kmeans_pp == 0
             init_centroid = data(randperm(data_size,k),:);
         else
             init_centroid = [data(randperm(data_size,1),:)];

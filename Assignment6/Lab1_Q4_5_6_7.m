@@ -1,6 +1,6 @@
 clc;
 clear;
-
+id = "S4151968";
 data = load("data/kmeans1.mat");
 data = cell2mat(struct2cell(data));
 max_epochs = 1000;
@@ -40,7 +40,7 @@ end
 figure
 plot(collated_error_list(:,1),collated_error_list(:,2))
 text(collated_error_list(max_error_indx,1),collated_error_list(max_error_indx,2),"kOptimum");
-title("D-Error values for different K values");
+title("D-Error values for different K values ["+id+"]");
 legend("D-Error");
 
 figure
@@ -50,7 +50,7 @@ plot(collated_error_list(:,1),collated_error_list(:,4))
 text(collated_error_list(max_error_indx,1),collated_error_list(max_error_indx,3),"K-optimum");
 text(collated_error_list(max_error_indx,1),collated_error_list(max_error_indx,4),"K-optimum");
 line([2 2], get(gca, 'ylim'));
-title("R-Error & J-Error values for different K values");
+title("R-Error & J-Error values for different K values ["+id+"]");
 legend("R-Error","J-Error");
 text(3,5000,'Optimal K value is = 2');
 

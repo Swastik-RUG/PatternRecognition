@@ -7,7 +7,6 @@ rng(100);
 
 k = 100;
 itr = 20;
-% Confused about this number, point 7 says its 20 questions say it is 10.
 epoch = 10;
 max_epochs = 100;
 collated_kmeans_q_errors = [];

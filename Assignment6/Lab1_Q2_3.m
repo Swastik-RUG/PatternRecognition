@@ -1,6 +1,6 @@
 clc;
 clear;
-
+id = "S4151968";
 data = load("data/kmeans1.mat");
 data = cell2mat(struct2cell(data));
 max_epochs = 1000;
@@ -20,7 +20,7 @@ for i=1:length(K)
         s = scatter(data(cluster_labels == j,1), data(cluster_labels == j,2),'filled');
         s.MarkerFaceAlpha = 0.3;
         hold on;
-        title("K = "+j)
+        title("K = "+j+" ["+id+"]")
     end
 end
 
@@ -39,6 +39,6 @@ for i=1:length(K)
         hold on;
         plot_arrow(init_centroid(j,1), init_centroid(j,2), centroid(j,1), centroid(j,2));
         hold on;
-        title("K = "+j)
+        title("K = "+j+" ["+id+"]")
     end
 end
