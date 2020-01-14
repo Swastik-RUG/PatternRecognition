@@ -35,6 +35,6 @@ fprintf("The mean of Kmeans++ error = %f \n", mean(collated_kmeans_PP_q_errors))
 fprintf("The standard deviation of Kmeans++ error = %f \n", std(collated_kmeans_PP_q_errors))
 
 % Welch's t-test
-[h,p] = ttest2(collated_kmeans_q_errors, collated_kmeans_PP_q_errors, 'Tail', 'right')
+[h,p] = ttest2(collated_kmeans_q_errors, collated_kmeans_PP_q_errors, 'Vartype', 'unequal')
 
 fprintf("The P value = %f \n", p);
