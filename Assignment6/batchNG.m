@@ -16,8 +16,6 @@ function prototypes = batchNG(data, cluster_centroid_data, k, epoch_max)
                 sigma = sigma_1 * (0.01/sigma_1).^((i-1)/epoch_max);
                 numerator(sorted_dist_indx(p),:) = numerator(sorted_dist_indx(p),:) + (exp(-p/sigma) * cur_sample_data);
                 denominator(sorted_dist_indx(p),:) =  denominator(sorted_dist_indx(p),:) + exp(-p/sigma);
-                % prototypes(p,:) = numerator(sorted_dist_indx(p),:)/denominator(sorted_dist_indx(p));
-                % prototypes(p,:) = numerator(p,:)/denominator(p);
             end
         end
         
