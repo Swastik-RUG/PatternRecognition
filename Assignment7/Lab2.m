@@ -1,23 +1,33 @@
 clc;
 clear;
 rng(100);
+ID = "S4151968";
 data = load('cluster_data.mat');
 data = cell2mat(struct2cell(data));
 t = 0.1;
 x = data(:,1);
 y = data(:,2);
-figure
-plot(data(:,1), data(:,2), '.'); 
-pairwisedist2 = pdist2(data, data); 
-[p1, p2] = find(tril(pairwisedist2 <= t & pairwisedist2 > 0));
-hold on;
-indexpairs = [p1, p2]';
-plot(x(indexpairs), y(indexpairs), '-b')
-title("Lab 2 pdist?")
 
 figure
-Z = linkage(data); 
-T = cluster(Z,'maxclust',4);
+Y = pdist(data);
+Z = linkage(Y, 'average'); 
+T = cluster(Z,'maxclust',99);
 cutoff = median([Z(end-2,3) Z(end-1,3)]);
 dendrogram(Z,'ColorThreshold',cutoff)
-title("Dengogram")
+title("["+ID + " ]Dengogram (Average)")
+
+figure
+Y = pdist(data);
+Z = linkage(Y, 'complete'); 
+T = cluster(Z,'maxclust',99);
+cutoff = median([Z(end-2,3) Z(end-1,3)]);
+dendrogram(Z,'ColorThreshold',cutoff)
+title("["+ID + " ]Dengogram (Max)")
+
+figure
+Y = pdist(data);
+Z = linkage(Y, 'single'); 
+T = cluster(Z,'maxclust',99);
+cutoff = median([Z(end-2,3) Z(end-1,3)]);
+dendrogram(Z,'ColorThreshold',cutoff)
+title("["+ID + " ]Dengogram (min)")

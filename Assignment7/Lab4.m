@@ -2,15 +2,19 @@ clc;
 clear;
 rng(100);
 
-data = load('provinces.mat');
-data = cell2mat(struct2cell(data));
-t = 0.1;
-x = data(:,1);
-y = data(:,2);
+X = importdata('provinces.mat');
+X = zscore(X);
+Y = pdist(X,'Euclidean');
+D = squareform(Y);
+%v = D(tril(true(size(D)), -1))';
+linkage_matrix = linkage(D, 'single');
+labels = ["South Holland", "North Holland", "Utrecht", "Limburg", "North Brabant", "Gelderland", "Overijssel", "Flevoland", "Groningen", "Zeeland", "Friesland", "Drenthe"];
 
-figure
-Z = linkage(data); 
-T = cluster(Z,'maxclust',12);
-cutoff = median([Z(end-2,3) Z(end-1,3)]);
-dendrogram(Z,'ColorThreshold',cutoff)
-title("Dengogram")
+t = sort(D(9,:));
+[similar, similar_indx] = find(D(9,:)==t(2));
+[dissimilar, dissimilar_indx] = max(D(9,:));
+fprintf("The city similar to Groningen with a dissimilarity of %f is %s \n", D(9, similar_indx), labels(similar_indx))
+fprintf("The city dissimilar to Groningen with a dissimilarity of %f is %s \n", D(9, dissimilar_indx), labels(dissimilar_indx))
+
+
+
