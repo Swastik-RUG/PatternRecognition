@@ -13,8 +13,8 @@ labels = ["South Holland", "North Holland", "Utrecht", "Limburg", "North Brabant
 t = sort(D(9,:));
 [similar, similar_indx] = find(D(9,:)==t(2));
 [dissimilar, dissimilar_indx] = max(D(9,:));
-fprintf("The city similar to Groningen with a dissimilarity of %f is %s \n", D(9, similar_indx), labels(similar_indx))
-fprintf("The city dissimilar to Groningen with a dissimilarity of %f is %s \n", D(9, dissimilar_indx), labels(dissimilar_indx))
+fprintf("The province similar to Groningen with a dissimilarity of %f is %s \n", D(9, similar_indx), labels(similar_indx))
+fprintf("The province dissimilar to Groningen with a dissimilarity of %f is %s \n", D(9, dissimilar_indx), labels(dissimilar_indx))
 
 
 
